@@ -10,17 +10,21 @@
     <body>
 
         <input type="radio" id="encode" name="selection" value="encode" checked>
-        <label id="encodel" for="encode" style="white-space:pre">encode</label>
-        <input type="radio" id="decode" name="selection" value="decode" >
-        <label id="decodel" for="decode" style="white-space:pre">decode</label>
-
-        <p id="instruction" style="white-space:pre">Enter words to convert to wawa</p>
-
-        <input type="text" id="userInput">
-        <button type="button" class="box" id="enter" style="white-space:pre">Convert</button>
+        <label id="encodel" for="encode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">encode</label>
         <br>
-        <p id="showResult" style="white-space:pre">Converted text</p>
-        <textarea id="output" rows="4" cols="60" readonly></textarea>
+        <input type="radio" id="decode" name="selection" value="decode" >
+        <label id="decodel" for="decode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">decode</label>
+
+        <p id="instruction" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Enter words to convert to wawa</p>
+
+        <textarea type="text" id="userInput" rows="8" cols="60" style="max-width: 100%"></textarea>
+        <br>
+        <button type="button" class="box" id="enter" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Convert</button>
+        <br>
+        <p id="showResult" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Converted text</p>
+        <button type="button" class="box" id="copyBtn" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">wawa</button>
+        <br><br>
+        <textarea id="output" rows="8" cols="60" readonly style="max-width: 100%"></textarea>
 
         
     </body>

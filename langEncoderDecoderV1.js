@@ -1,20 +1,22 @@
 async function main() {
-    const rls = require("readline-sync")
-    while (true) {
+    try {
+        const rls = require("readline-sync")
+        while (true) {
 
-        let test = String(rls.question('Enter 1 for encoding, 2 for decoding, and anything else to end the program\nInput: '))
+            let test = String(rls.question('Enter 1 for encoding, 2 for decoding, and anything else to end the program\nInput: '))
 
-        if (test == '1') {
-            output = await encode(String(rls.question('Enter string to be encoded\nInput: ')))
-        } else if (test == '2') {
-            output = await decode(String(rls.question('Enter wawa to be decoded\nInput: ')))
-        } else {
-            console.log("Thank you for using wawa encoder, and a fair wawa to you!")
-            return
+            if (test == '1') {
+                output = await encode(String(rls.question('Enter string to be encoded\nInput: ')))
+            } else if (test == '2') {
+                output = await decode(String(rls.question('Enter wawa to be decoded\nInput: ')))
+            } else {
+                console.log("Thank you for using wawa encoder, and a fair wawa to you!")
+                return
+            }
+            console.log(String(output) + "\n")
+
         }
-        console.log(String(output) + "\n")
-
-    }
+    } catch {}
 }
 
 
@@ -170,6 +172,8 @@ main()
 try {
 document.addEventListener('DOMContentLoaded', async function() {
 
+    document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
+    
     document.getElementById('enter').onclick = async function() {
 
         const input = document.getElementById("userInput").value
@@ -193,17 +197,43 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById("showResult").textContent = "Converted text"
         document.getElementById("encodel").textContent = "encode"
         document.getElementById("decodel").textContent = "decode"
+        document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
         
     }
 
     document.getElementById("decode").onclick = async function() {
 
         document.getElementById("instruction").textContent = await encode("Enter wawa to convert to words")
-        document.getElementById("enter").textContent = await encode("convert")
-        document.getElementById("showResult").textContent = await encode("converted text")
+        document.getElementById("enter").textContent = await encode("Convert")
+        document.getElementById("showResult").textContent = await encode("Converted text")
         document.getElementById("encodel").textContent = await encode("encode")
         document.getElementById("decodel").textContent = await encode("decode")
+        document.getElementById("copyBtn").textContent = "Copy to clipboard"
         
+    }
+
+    document.getElementById("copyBtn").onclick = async function() {
+
+        const copiedText = document.getElementById("output").value
+        await navigator.clipboard.writeText(copiedText)
+        copyBtn.disabled = true
+
+        const action = document.querySelector('input[name="selection"]:checked').value
+        const originalText = document.getElementById("copyBtn").textContent
+
+        console.log(originalText)
+        if (action == "decode")  {
+            copyBtn.textContent = "Copied to clipboard"
+        } else {
+            copyBtn.textContent = await encode("Copied to clipboard")
+        }
+
+        setTimeout(() => {
+            copyBtn.textContent = originalText
+            copyBtn.disabled = false
+        }, 1000)
+
+
     }
         
 })
