@@ -171,8 +171,6 @@ main()
 
 try {
 document.addEventListener('DOMContentLoaded', async function() {
-
-    document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
     
     document.getElementById('enter').onclick = async function() {
 
@@ -197,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById("showResult").textContent = "Converted text"
         document.getElementById("encodel").textContent = "encode"
         document.getElementById("decodel").textContent = "decode"
-        document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
+        document.getElementById("copyBtn").textContent = "Copy to clipboard"
         
     }
 
@@ -208,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById("showResult").textContent = await encode("Converted text")
         document.getElementById("encodel").textContent = await encode("encode")
         document.getElementById("decodel").textContent = await encode("decode")
-        document.getElementById("copyBtn").textContent = "Copy to clipboard"
+        document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
         
     }
 
@@ -222,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const originalText = document.getElementById("copyBtn").textContent
 
         console.log(originalText)
-        if (action == "decode")  {
+        if (action == "encode")  {
             copyBtn.textContent = "Copied to clipboard"
         } else {
             copyBtn.textContent = await encode("Copied to clipboard")
