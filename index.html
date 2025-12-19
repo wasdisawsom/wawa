@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="./images/eepyscug.png" type="image"/>
+        <title>wawa</title>
+        <script src="langEncoderDecoderV1.js"></script> 
+    </head>
+    <body>
+
+        <input type="radio" id="encode" name="selection" value="encode" checked>
+        <label id="encodel" for="encode" style="white-space:pre">encode</label>
+        <input type="radio" id="decode" name="selection" value="decode" >
+        <label id="decodel" for="decode" style="white-space:pre">decode</label>
+
+        <p id="instruction" style="white-space:pre">Enter words to convert to wawa</p>
+
+        <input type="text" id="userInput">
+        <button type="button" class="box" id="enter" style="white-space:pre">Convert</button>
+        <br>
+        <p id="showResult" style="white-space:pre">Converted text</p>
+        <textarea id="output" rows="4" cols="60" readonly></textarea>
+
+        
+    </body>
+</html>

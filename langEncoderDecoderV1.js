@@ -1,63 +1,54 @@
-const rls = require("readline-sync")
+async function main() {
+    const rls = require("readline-sync")
+    while (true) {
 
-while (true) {
+        let test = String(rls.question('Enter 1 for encoding, 2 for decoding, and anything else to end the program\nInput: '))
 
-    let test = String(rls.question('Enter 1 for encoding, 2 for decoding, and anything else to end the program\nInput: '))
+        if (test == '1') {
+            output = await encode(String(rls.question('Enter string to be encoded\nInput: ')))
+        } else if (test == '2') {
+            output = await decode(String(rls.question('Enter wawa to be decoded\nInput: ')))
+        } else {
+            console.log("Thank you for using wawa encoder, and a fair wawa to you!")
+            return
+        }
+        console.log(String(output) + "\n")
 
-    if (test == '1') {
-        output = encode(String(rls.question('Enter string to be encoded\nInput: ')))
-    } else if (test == '2') {
-        output = decode(String(rls.question('Enter wawa to be decoded\nInput: ')))
-    } else {
-        console.log("Thank you for using wawa encoder, and a fair wawa to you!")
-        return
     }
-
-    if (output[1]) {
-        console.log(String(output[0]) + "\n")
-    } else { // output[1] determines if an error was thrown or not
-        console.error("\nAn error has occured, wadism pls fix!!!\n\n", output[0], "\n\nAn error has occured, wadism pls fix!!!\n")
-    }
-
 }
 
 
-function encode(ui) {
-    try {
-        let baseTen = alphatoten(ui) // converting the input to base 10 
+async function encode(ui) {
+        let baseTen = await alphatoten(ui) // converting the input to base 10 
         let numdivisor = BigInt(Math.floor(Math.random() * 27) + 1) // generating a random number between 1 and 27 as a divisor
-        let wadivisor = tentowa(numdivisor - 1n) // making into 3bit base 3 wawa
+        let wadivisor = await tentowa(numdivisor - 1n) // making into 3bit base 3 wawa
         wadivisor = " ".repeat(3-wadivisor.length) + wadivisor // making sure it reserves 3 bits to be wawa
         let modulo = baseTen % BigInt(numdivisor) // getting the modulo to ensure the base 10 user input can be divided cleanly by divisor
-        let wadulo = tentowa(modulo) // making into 3bit base 3 wawa
+        let wadulo = await tentowa(modulo) // making into 3bit base 3 wawa
         wadulo = " ".repeat(3-wadulo.length) + wadulo // making sure it reserves 3 bits to be wawa
         baseTen -= modulo // subtracting the modulo to ensure it can be divided cleanly
         baseTen /= numdivisor // dividing it to add complexity so its harder to crack
-        let encodedInput = tentowa(baseTen) // converting input to wawa
+        let encodedInput = await tentowa(baseTen) // converting input to wawa
         let output = "wa" + wadulo + encodedInput + wadivisor + "wa" // adding the modulo and divisor as keys to decode the wawa
 
-    return [output, true]
-    } catch (error) {
-        return [error, false]
-    }
+    return output
 }
 
+async function decode(wawa){
 
-function decode(wawa){
-
-    let splitInputArray = [watoten(wawa.slice(2,5)), watoten(wawa.slice(5,-5)), watoten(wawa.slice(-5,-2))] 
+    let splitInputArray = [await watoten(wawa.slice(2,5)), await watoten(wawa.slice(5,-5)), await watoten(wawa.slice(-5,-2))] 
     // splitInputArray[0,1,2] are modulo, message, divisor respectively and are converted to base 10
 
     let baseTen = splitInputArray[0] + splitInputArray[1] * (splitInputArray[2]+1n)
     // wawa input decoded to base 10
 
-    output = tentoalpha(baseTen)
+    output = await tentoalpha(baseTen)
     // base 10 input converted to base 27
 
-    return [output, true]
+    return output
 }
 
-function alphatoten(input) { // function to turn base 27 to base 10
+async function alphatoten(input) { // function to turn base 27 to base 10
 
     const regex = /^[a-z ]+$/ // regular expression to filter the 27 characters
     inputArray = String(input).toLowerCase().split("") // splitting the string into an array
@@ -90,7 +81,7 @@ function alphatoten(input) { // function to turn base 27 to base 10
     
 }
 
-function tentoalpha(input) { // function to turn base 10 to base 27
+async function tentoalpha(input) { // function to turn base 10 to base 27
 
     const rawArray = [] // array to store the converted base 27 numbers
 
@@ -117,7 +108,7 @@ function tentoalpha(input) { // function to turn base 10 to base 27
     
 }
 
-function tentowa(input) { // function to turn base 10 to base 3
+async function tentowa(input) { // function to turn base 10 to base 3
 
     const rawArray = [] // array to store the converted base 3 numbers
 
@@ -148,7 +139,7 @@ function tentowa(input) { // function to turn base 10 to base 3
 
 }
 
-function watoten(input) { // function to turn base 3 to base 10
+async function watoten(input) { // function to turn base 3 to base 10
 
     const regex = /^[wa ]+$/ // regular expression to filter the 27 characters
     inputArray = String(input).toLowerCase().split("") // splitting the string into an array
@@ -172,4 +163,50 @@ function watoten(input) { // function to turn base 3 to base 10
     }
 
     return output
+}
+
+main()
+
+try {
+document.addEventListener('DOMContentLoaded', async function() {
+
+    document.getElementById('enter').onclick = async function() {
+
+        const input = document.getElementById("userInput").value
+        const action = document.querySelector('input[name="selection"]:checked').value
+
+        console.log(action)
+        console.log(input)
+        if (action == "encode") {
+            console.log('wawa')
+            document.getElementById("output").textContent = await encode(input)
+        } else {
+            console.log('wawa')
+            document.getElementById("output").textContent = await decode(input)
+        }
+    }
+
+    document.getElementById("encode").onclick = async function() {
+
+        document.getElementById("instruction").textContent = "Enter words to convert to wawa"
+        document.getElementById("enter").textContent = "Convert"
+        document.getElementById("showResult").textContent = "Converted text"
+        document.getElementById("encodel").textContent = "encode"
+        document.getElementById("decodel").textContent = "decode"
+        
+    }
+
+    document.getElementById("decode").onclick = async function() {
+
+        document.getElementById("instruction").textContent = await encode("Enter wawa to convert to words")
+        document.getElementById("enter").textContent = await encode("convert")
+        document.getElementById("showResult").textContent = await encode("converted text")
+        document.getElementById("encodel").textContent = await encode("encode")
+        document.getElementById("decodel").textContent = await encode("decode")
+        
+    }
+        
+})
+} catch (error) {
+    console.log(error)
 }
