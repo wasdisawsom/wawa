@@ -5,24 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="./images/eepyscug.png" type="image"/>
         <title>wawa</title>
-        <script src="langEncoderDecoderV1.js"></script> 
+        <script src="index.js"></script> 
     </head>
     <body>
 
         <input type="radio" id="encode" name="selection" value="encode" checked>
-        <label id="encodel" for="encode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">encode</label>
+        <label id="encodel" for="encode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">&lt;encode&gt;</label>
         <br>
         <input type="radio" id="decode" name="selection" value="decode" >
-        <label id="decodel" for="decode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">decode</label>
+        <label id="decodel" for="decode" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">&lt;decode&gt;</label>
 
-        <p id="instruction" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Enter words to convert to wawa</p>
+        <p id="instruction" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Enter words to convert to wawa.</p>
 
         <textarea type="text" id="userInput" rows="8" cols="60" style="max-width: 100%"></textarea>
         <br>
-        <button type="button" class="box" id="enter" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Convert</button>
+        <button type="button" class="box" id="enter" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Convert!</button>
         <br>
-        <p id="showResult" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Converted text</p>
-        <button type="button" class="box" id="copyBtn" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Copy to clipboard</button>
+        <p id="showResult" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Converted text:</p>
+        <button type="button" class="box" id="copyBtn" style="white-space:pre; max-width: 100%; overflow-wrap: anywhere; white-space: normal;">Copy to clipboard.</button>
         <br><br>
         <textarea id="output" rows="8" cols="60" readonly style="max-width: 100%"></textarea>
 

@@ -21,7 +21,7 @@ async function main() {
 
 
 async function encode(ui) {
-        let baseTen = await alphatoten(ui) // converting the input to base 10 
+        let baseTen = await alphaandmoretoten(ui) // converting the input to base 10 
         let numdivisor = BigInt(Math.floor(Math.random() * 27) + 1) // generating a random number between 1 and 27 as a divisor
         let wadivisor = await tentowa(numdivisor - 1n) // making into 3bit base 3 wawa
         wadivisor = " ".repeat(3-wadivisor.length) + wadivisor // making sure it reserves 3 bits to be wawa
@@ -38,14 +38,27 @@ async function encode(ui) {
 
 async function decode(wawa){
 
+    let tempbool = false
+
+    if(wawa.slice(0,6) == "legacy") {  // check to see if user wants to decode legacy wawa messages
+        tempbool = true
+        wawa = wawa.slice(6)
+    }
+
     let splitInputArray = [await watoten(wawa.slice(2,5)), await watoten(wawa.slice(5,-5)), await watoten(wawa.slice(-5,-2))] 
     // splitInputArray[0,1,2] are modulo, message, divisor respectively and are converted to base 10
 
     let baseTen = splitInputArray[0] + splitInputArray[1] * (splitInputArray[2]+1n)
     // wawa input decoded to base 10
 
-    output = await tentoalpha(baseTen)
-    // base 10 input converted to base 27
+    let output = ''
+
+    if (tempbool) {
+        output = await tentoalpha(baseTen)    // base 10 input converted to base 96
+    } else {
+        output = await tentoalphaandmore(baseTen)   //base 10 input converted to base 96
+    }
+
 
     return output
 }
@@ -109,7 +122,7 @@ async function tentoalpha(input) { // function to turn base 10 to base 27
         }
     }
     
-    output = alphaArray.join("") // joining all the elements together
+    let output = alphaArray.join("") // joining all the elements together
     
     return output
     
@@ -172,6 +185,72 @@ async function watoten(input) { // function to turn base 3 to base 10
     return output
 }
 
+async function alphaandmoretoten(input) { // function to turn base 96 to base 10
+
+    const regex = /^[ -~\n]$/ // regular expression to filter the 27 characters
+    let inputArray = String(input).split("") // splitting the string into an array
+    let filteredArray = []
+    let purgedArray = []
+    for (const char of inputArray) {
+        if (regex.test(char)) {
+            filteredArray.push(char) // running the array through a filter 
+        } else {
+            purgedArray.push(char) // logging the purged characters
+        }
+    }
+    
+    console.log(purgedArray)
+    
+    // console.log(filteredArray)
+
+    for (index = 0; index < filteredArray.length; index++) { // loop to convert the characters to base 96 in number in the array
+        if (filteredArray[index] == "\n") {
+            filteredArray[index] = 95
+        } else {
+            filteredArray[index] = filteredArray[index].charCodeAt(0) - 32
+        }
+    } 
+
+    // console.log(filteredArray)
+
+    let output = 0n // making the output a bigint for accuracy
+
+    for (const value of filteredArray) { // converting the base 27 numbers into base 10 and adding them to the output
+        output = output * 96n + BigInt(value)
+    }
+
+    return output
+    
+}
+
+async function tentoalphaandmore(input) { // function to turn base 10 to base 96
+
+    const rawArray = [] // array to store the converted base 96 numbers
+
+    while (input > 0n) {
+        rawArray.push(Number(input % 96n))  
+        input /= 96n
+    }
+
+    rawArray.reverse() // using push and reverse instead of unshift for optimisation reasons
+
+    let alphaArray = []
+
+    for (const value of rawArray) { // converting the elements in the array back to characters
+        if (value == 95) {
+            alphaArray.push("\n")
+        } else {
+            alphaArray.push(String.fromCharCode(value+32))
+        }
+    }
+    
+    let output = alphaArray.join("") // joining all the elements together
+    
+    return output
+    
+}
+
+
 main()
 
 try {
@@ -191,23 +270,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     document.getElementById("encode").onclick = async function() {
 
-        document.getElementById("instruction").textContent = "Enter words to convert to wawa"
-        document.getElementById("enter").textContent = "Convert"
-        document.getElementById("showResult").textContent = "Converted text"
-        document.getElementById("encodel").textContent = "encode"
-        document.getElementById("decodel").textContent = "decode"
-        document.getElementById("copyBtn").textContent = "Copy to clipboard"
+        document.getElementById("instruction").textContent = "Enter wawa to convert to words."
+        document.getElementById("enter").textContent = "Convert!"
+        document.getElementById("showResult").textContent = "Converted text::"
+        document.getElementById("encodel").textContent = "<encode>"
+        document.getElementById("decodel").textContent = "<decode>"
+        document.getElementById("copyBtn").textContent = "Copy to clipboard."
         
     }
 
     document.getElementById("decode").onclick = async function() {
 
-        document.getElementById("instruction").textContent = await encode("Enter wawa to convert to words")
-        document.getElementById("enter").textContent = await encode("Convert")
-        document.getElementById("showResult").textContent = await encode("Converted text")
-        document.getElementById("encodel").textContent = await encode("encode")
-        document.getElementById("decodel").textContent = await encode("decode")
-        document.getElementById("copyBtn").textContent = await encode("Copy to clipboard")
+        document.getElementById("instruction").textContent = await encode("Enter wawa to convert to words.")
+        document.getElementById("enter").textContent = await encode("Convert!")
+        document.getElementById("showResult").textContent = await encode("Converted text:")
+        document.getElementById("encodel").textContent = await encode("<encode>")
+        document.getElementById("decodel").textContent = await encode("<decode>")
+        document.getElementById("copyBtn").textContent = await encode("Copy to clipboard.")
         
     }
 
@@ -221,9 +300,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         const originalText = document.getElementById("copyBtn").textContent
 
         if (action == "encode")  {
-            copyBtn.textContent = "Copied to clipboard"
+            copyBtn.textContent = "Copied to clipboard."
         } else {
-            copyBtn.textContent = await encode("Copied to clipboard")
+            copyBtn.textContent = await encode("Copied to clipboard.")
         }
 
         setTimeout(() => {
