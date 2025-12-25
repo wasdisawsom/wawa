@@ -16,9 +16,8 @@ async function main() {
             console.log(String(output) + "\n")
 
         }
-    } catch {}
+    } catch (e) {console.log(e)}
 }
-
 
 async function encode(ui) {
         let baseTen = await alphaandmoretoten(ui) // converting the input to base 10 
@@ -43,6 +42,17 @@ async function decode(wawa){
     if(wawa.slice(0,6) == "legacy") {  // check to see if user wants to decode legacy wawa messages
         tempbool = true
         wawa = wawa.slice(6)
+    }
+
+    while (!wawa.startsWith("wa") || !wawa.endsWith("wa")) {
+        if (wawa.length == 0) {
+            break
+        }
+        if (!wawa.startsWith("wa")) {
+            wawa = wawa.slice(1)
+        } else if (!wawa.endsWith("wa")) {
+            wawa = wawa.slice(0,-1)
+        }
     }
 
     let splitInputArray = [await watoten(wawa.slice(2,5)), await watoten(wawa.slice(5,-5)), await watoten(wawa.slice(-5,-2))] 
@@ -162,7 +172,12 @@ async function tentowa(input) { // function to turn base 10 to base 3
 async function watoten(input) { // function to turn base 3 to base 10
 
     const regex = /^[wa ]+$/ // regular expression to filter the 27 characters
-    inputArray = String(input).toLowerCase().split("") // splitting the string into an array
+
+    input = input.toLowerCase()
+
+    inputArray = String(input).split("") // splitting the string into an array
+
+
     let filteredArray = []
 
     for (const char of inputArray) {
@@ -181,7 +196,6 @@ async function watoten(input) { // function to turn base 3 to base 10
             output += 1n
         }
     }
-
     return output
 }
 
@@ -270,9 +284,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     document.getElementById("encode").onclick = async function() {
 
-        document.getElementById("instruction").textContent = "Enter wawa to convert to words."
+        document.getElementById("instruction").textContent = "Enter words to convert to wawa."
         document.getElementById("enter").textContent = "Convert!"
-        document.getElementById("showResult").textContent = "Converted text::"
+        document.getElementById("showResult").textContent = "Converted text:"
         document.getElementById("encodel").textContent = "<encode>"
         document.getElementById("decodel").textContent = "<decode>"
         document.getElementById("copyBtn").textContent = "Copy to clipboard."
